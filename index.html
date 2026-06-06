@@ -128,6 +128,143 @@ canvas{display:block;border-radius:16px;border:3px solid rgba(255,220,100,.3);}
   transition:left .15s ease, top .15s ease;
 }
 
+
+/* ===== Mobile ===== */
+@media (max-width: 768px){
+
+#topbar{
+  flex-direction:column;
+  gap:8px;
+  padding:8px;
+}
+
+#topbar h1{
+  font-size:18px;
+  text-align:center;
+}
+
+#topbar > div{
+  width:100%;
+  display:grid !important;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px;
+}
+
+.hud-pill{
+  justify-content:center;
+  padding:6px 10px;
+}
+
+.hud-pill .val{
+  font-size:15px;
+}
+
+#wrap{
+  width:100vw;
+  display:flex;
+  justify-content:center;
+}
+
+canvas{
+  width:100vw;
+  height:auto;
+  max-height:65vh;
+  border-radius:0;
+  border-left:none;
+  border-right:none;
+}
+
+.ov-panel{
+  width:95%;
+  padding:18px;
+}
+
+.ov-panel h2{
+  font-size:22px;
+}
+
+.ov-panel p{
+  font-size:13px;
+}
+
+#shop-items{
+  max-height:40vh;
+  gap:8px;
+}
+
+.scard{
+  width:calc(50% - 4px);
+  padding:10px;
+}
+
+.scard .sname{
+  font-size:13px;
+}
+
+.scard .sdesc{
+  font-size:10px;
+  min-height:auto;
+}
+
+#shop-actions{
+  flex-direction:column;
+  gap:10px !important;
+}
+
+#no-buy-zone{
+  width:100% !important;
+}
+
+#toggles{
+  bottom:8px;
+  right:8px;
+}
+
+#toggles button{
+  width:42px;
+  height:42px;
+}
+}
+
+
+#mobile-controls{
+  display:none;
+}
+
+@media (max-width:768px){
+
+  #mobile-controls{
+    position:absolute;
+    left:50%;
+    bottom:-170px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:10px;
+    z-index:100;
+  }
+
+  #mobile-controls button{
+    border:none;
+    border-radius:999px;
+    padding:12px 18px;
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    background:rgba(0,0,0,.55);
+    border:2px solid rgba(255,220,100,.35);
+    touch-action:manipulation;
+  }
+
+  #btn-fire{
+    min-width:110px;
+  }
+
+  #btn-bomb{
+    min-width:90px;
+  }
+}
+
+
 </style>
 </head>
 <body>
@@ -197,6 +334,12 @@ canvas{display:block;border-radius:16px;border:3px solid rgba(255,220,100,.3);}
     <button id="sound-toggle" title="Bật/tắt âm thanh">🔊</button>
     <button id="ielts-toggle" title="Bật/tắt Ô HI">📖</button>
   </div>
+
+  <div id="mobile-controls">
+    <button id="btn-fire">Kéo</button>
+    <button id="btn-bomb">Mìn</button>
+  </div>
+
 </div>
 
 <script>
@@ -832,7 +975,7 @@ function loop(ts){
   requestAnimationFrame(loop);
 }
 
-cv.addEventListener('mousedown',fireHook);
+cv.addEventListener('mousedown',fireHook  );
 window.addEventListener('keydown',function(e){
   if(e.code==='Space'){e.preventDefault();fireHook();}
   if(e.code==='ArrowUp'){e.preventDefault();useDynamite();}
@@ -908,6 +1051,23 @@ noBtn.addEventListener('mousedown', function(e) {
 
 // Khởi tạo vị trí ban đầu
 resetNoButton();
+
+const btnFire = document.getElementById('btn-fire');
+const btnBomb = document.getElementById('btn-bomb');
+
+btnFire.addEventListener('click', fireHook);
+btnBomb.addEventListener('click', useDynamite);
+
+// giảm độ trễ trên mobile
+btnFire.addEventListener('touchstart', e=>{
+  e.preventDefault();
+  fireHook();
+});
+
+btnBomb.addEventListener('touchstart', e=>{
+  e.preventDefault();
+  useDynamite();
+});
 
 </script>
 </body>
